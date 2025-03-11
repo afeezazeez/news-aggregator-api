@@ -27,13 +27,14 @@ class NewsApiService implements NewsSourceInterface
         $page = 1;
         $pageSize = config('app.news_page_size');
         $maxResults = config('app.news_api_service_max');
+        $newsApiCategory = config('app.news_api_service_category');
 
         do {
             try {
                 $response = Http::retry(3, 100)
                     ->get($this->baseUrl, [
                         'apiKey' => $this->apiKey,
-                        'q' => 'technology',
+                        'q' => $newsApiCategory,
                         'sortBy' => 'publishedAt',
                         'to' => date('Y-m-d'),
                         'pageSize' => $pageSize,
