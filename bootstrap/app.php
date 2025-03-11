@@ -1,6 +1,7 @@
 <?php
 
 use App\Exceptions\ClientErrorException;
+use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -18,6 +19,9 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
 
+    })
+    ->withSchedule(function (Schedule $schedule){
+        $schedule->command('app:fetch-news')->hourly();
     })
     ->withExceptions(function (Exceptions $exceptions) {
 
@@ -41,5 +45,6 @@ return Application::configure(basePath: dirname(__DIR__))
         $exceptions->renderable(function (Exception $e) {
             return errorResponse($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         });
+
 
     })->create();

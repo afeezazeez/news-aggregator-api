@@ -31,14 +31,21 @@ class FetchNews extends Command
     /**
      * Execute the console command.
      */
+    /**
+     * Execute the console command.
+     */
     public function handle(): void
     {
         $sources = $this->articleService->getNewsSources();
+        $totalSources = count($sources);
 
         $this->newLine();
         $this->info("======================================");
         $this->info("🚀 Starting to fetch articles from all sources...");
         $this->info("======================================");
+
+        $progressBar = $this->output->createProgressBar($totalSources);
+        $progressBar->start();
 
         foreach ($sources as $source) {
             $this->newLine();
@@ -49,16 +56,20 @@ class FetchNews extends Command
                 $this->articleService->fetchAndStoreArticles($source);
                 $this->info("✅ Successfully fetched and stored articles from: <fg=green>{$source}</>");
             } catch (\Exception $e) {
-                $this->error("❌ Failed fetching from {$source}: {$e}");
-                continue;
+                $this->error("❌ Failed fetching from {$source}: {$e->getMessage()}");
             }
+
+            $progressBar->advance();
         }
 
-        $this->newLine();
+        $progressBar->finish();
+
+        $this->newLine(2);
         $this->info("======================================");
         $this->info("🏁 Finished fetching articles.");
         $this->info("======================================");
         $this->newLine();
     }
+
 
 }
