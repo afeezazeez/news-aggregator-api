@@ -50,6 +50,7 @@ class FetchNews extends Command
                 $this->info("✅ Successfully fetched and stored articles from: <fg=green>{$source}</>");
             } catch (\Exception $e) {
                 $this->error("❌ Failed fetching from {$source}: {$e}");
+                continue;
             }
         }
 

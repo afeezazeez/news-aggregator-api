@@ -5,6 +5,7 @@ use App\Interfaces\NewsSourceInterface;
 use Carbon\Carbon;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class GuardianNewsService implements NewsSourceInterface
 {
@@ -24,35 +25,49 @@ class GuardianNewsService implements NewsSourceInterface
     {
         $allArticles = [];
         $page = 1;
+        $pageSize = config('app.api_news_page_size');
 
         do {
-            $response = Http::retry(3, 100)
-                ->get($this->baseUrl, [
-                    'api-key' => $this->apiKey,
-                    'order-by' => 'newest',
-                    'from-date' => date('Y-m-d'),
-                    'show-fields' => 'body,body,shortUrl',
-                    'show-tags' => 'contributor',
-                    'page-size' => config('app.api_news_page_size'),
-                    'page' => $page,
-                ])->json();
+            try {
+                $response = Http::retry(3, 100)
+                    ->get($this->baseUrl, [
+                        'api-key' => $this->apiKey,
+                        'order-by' => 'newest',
+                        'from-date' => date('Y-m-d'),
+                        'show-fields' => 'body,body,shortUrl',
+                        'show-tags' => 'contributor',
+                        'page-size' => $pageSize,
+                        'page' => $page,
+                    ])->json();
 
-            $articles = $response['response']['results'] ?? [];
-            $allArticles = array_merge($allArticles, $this->normalizeArticles($articles));
+                if (empty($response['response']['results'])) {
+                    Log::warning("[GuardianNewsService] No articles found on page {$page}");
+                    break;
+                }
 
-            $currentPage = $response['response']['currentPage'] ?? $page;
-            $totalPages = $response['response']['pages'] ?? 1;
+                $articles = $this->normalizeArticles($response['response']['results']);
+                $allArticles = array_merge($allArticles, $articles);
 
-            $page++;
+                $currentPage = $response['response']['currentPage'] ?? $page;
+                $totalPages = $response['response']['pages'] ?? 1;
+                $page++;
+
+            } catch (\Exception $e) {
+                Log::error("[GuardianNewsService] Error fetching page {$page}: {$e->getMessage()}");
+                $page++;
+            }
         } while ($currentPage < $totalPages);
 
         return $allArticles;
     }
 
 
+
     public function normalizeArticles(array $articles): array
     {
-        $source = array_search(static::class, app('news.sources'), true);
+        $newsSourcesMapping = (new ArticleService())->getNewsSourcesMapping();
+
+        $source = array_search(static::class, $newsSourcesMapping, true);
 
         return array_map(function ($article) use ($source) {
             return [

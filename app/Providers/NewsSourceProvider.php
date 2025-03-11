@@ -4,7 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
-class NewsServiceProvider extends ServiceProvider
+class NewsSourceProvider extends ServiceProvider
 {
     /**
      * Register services.
@@ -13,8 +13,9 @@ class NewsServiceProvider extends ServiceProvider
     {
         $this->app->singleton('news.sources', function () {
             return [
-                'guardian' => \App\Services\GuardianNewsService::class,
-                'newsapi'  => \App\Services\NewsApiService::class
+                //'guardian' => \App\Services\GuardianNewsService::class,
+                'newsapi'  => \App\Services\NewsApiService::class,
+                //'nytimes'  => \App\Services\NytimesNewsService::class
             ];
         });
 
