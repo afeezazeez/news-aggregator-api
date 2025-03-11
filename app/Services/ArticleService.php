@@ -31,7 +31,6 @@ class ArticleService
             $service = app($sourcesMapping[$source]);
 
             $articles = $service->fetchArticles();
-
             foreach ($articles as $article) {
                 Article::updateOrCreate(
                     ['unique_id' => $article['unique_id'], 'source' => $source],
@@ -42,7 +41,7 @@ class ArticleService
             Cache::forget('article_filters');
 
         } catch (\Exception $e) {
-            Log::error("[Article Service] Failed to fetch articles from '{$source}': " . $e->getMessage());
+            Log::error("[Article Service] Failed to fetch articles from '{$source}': " . $e);
         }
     }
 

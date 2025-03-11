@@ -33,7 +33,7 @@ class GuardianNewsService implements NewsSourceInterface
                     'from-date' => date('Y-m-d'),
                     'show-fields' => 'body,body,shortUrl',
                     'show-tags' => 'contributor',
-                    'page-size' => 20,
+                    'page-size' => config('app.api_news_page_size'),
                     'page' => $page,
                 ])->json();
 
@@ -57,10 +57,12 @@ class GuardianNewsService implements NewsSourceInterface
         return array_map(function ($article) use ($source) {
             return [
                 'unique_id' => $article['id'],
-                'title' => $article['webTitle'] ?? null,
+                'title' => $title = $article['webTitle'] ?? null,
+                'slug' => slugify($title),
                 'content' => $article['fields']['body'] ?? '',
+                'url' => $article['webUrl'] ?? null,
                 'source' => $source,
-                'category' => $article['sectionName'] ?? $article['pillarName'] ?? null,
+                'category' => $article['sectionName'] ?? $article['pillarName'] ?? "General",
                 'contributor' => $article['tags'][0]['webTitle'] ?? null,
                 'published_at' => isset($article['webPublicationDate'])
                     ? Carbon::parse($article['webPublicationDate'])->format('Y-m-d H:i:s')

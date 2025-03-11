@@ -14,6 +14,8 @@ return [
     */
 
     'name' => env('APP_NAME', 'Laravel'),
+    'api_news_page_size' => env('API_NEWS_PAGE_SIZE'),
+    'news_api_service_max' => env('NEWS_API_SERVICE_MAX'),
 
     /*
     |--------------------------------------------------------------------------
