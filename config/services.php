@@ -35,4 +35,18 @@ return [
         ],
     ],
 
+    'newsapi' => [
+        'key' => env('NEWSAPI_KEY'),
+        'url' => env('NEWSAPI_API_URL'),
+    ],
+    'guardian' => [
+        'key' => env('GUARDIAN_KEY'),
+        'url' => env('GUARDIAN_API_URL'),
+    ],
+    'nytimes' => [
+        'key' => env('NYTIMES_KEY'),
+        'url' => env('NYTIMES_API_URL'),
+    ],
+
+
 ];
