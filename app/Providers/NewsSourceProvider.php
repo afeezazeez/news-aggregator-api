@@ -13,9 +13,9 @@ class NewsSourceProvider extends ServiceProvider
     {
         $this->app->singleton('news.sources', function () {
             return [
-                //'guardian' => \App\Services\GuardianNewsService::class,
+                'guardian' => \App\Services\GuardianNewsService::class,
                 'newsapi'  => \App\Services\NewsApiService::class,
-                //'nytimes'  => \App\Services\NytimesNewsService::class
+                'nytimes'  => \App\Services\NytimesNewsService::class
             ];
         });
 
