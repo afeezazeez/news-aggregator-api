@@ -10,13 +10,12 @@ use Illuminate\Support\Facades\Log;
 class ArticleService
 {
 
-    private mixed $page_size;
+
     /**
      * Create a new class instance.
      */
     public function __construct()
     {
-        $this->page_size = (request()->has('perPage') && is_numeric(request('perPage'))) ? request('perPage') : config('app.default_pagination_size');
     }
 
     public function fetchAndStoreArticles(string $source): void
@@ -48,17 +47,17 @@ class ArticleService
         }
     }
 
-    public function getArticles(array $filters = []): LengthAwarePaginator
+    public function getArticles(array $filters = [],mixed $page_size): LengthAwarePaginator
     {
         $page = request('page', 1);
         $cacheKey = 'articles_' . md5(json_encode($filters)) . "_page_{$page}";
 
         store_cache_key($cacheKey);
 
-        return Cache::remember($cacheKey, 600, function () use ($filters) {
+        return Cache::remember($cacheKey, 600, function () use ($filters,$page_size) {
             return Article::filter($filters)
                 ->orderBy('published_at', 'desc')
-                ->paginate($this->page_size)
+                ->paginate($page_size)
                 ->appends(request()->query());
         });
     }
