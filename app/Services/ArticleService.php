@@ -72,10 +72,8 @@ class ArticleService
     /**
      * Retrieve a single article by its ID.
      *
-     * @param int $id The ID of the article to retrieve.
-     *
+     * @param string $slug
      * @return Article The found article instance.
-     *
      */
     public function getSingleArticle(string $slug): Article
     {
