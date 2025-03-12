@@ -68,6 +68,11 @@ You should be able to visit your app at your laravel app base url e.g http://loc
 $ php artisan app:fetch-news
 ```
 
+### Run the below command to start schedule worker to update news hourly
+```console
+$ php artisan schedule:work
+```
+
 Api swagger documentation - http://news-aggregator-api.test/api/documentation or http://localhost:8000/api/documentation
 
 ### Running tests
