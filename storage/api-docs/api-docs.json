@@ -158,6 +158,110 @@
                 }
             }
         },
+        "/api/articles/{slug}": {
+            "get": {
+                "tags": [
+                    "Articles"
+                ],
+                "summary": "Get a single article by slug",
+                "description": "Fetches a single article based on the provided slug.",
+                "operationId": "getSingleArticle",
+                "parameters": [
+                    {
+                        "name": "slug",
+                        "in": "path",
+                        "description": "The slug of the article",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 10
+                                                },
+                                                "source": {
+                                                    "type": "string",
+                                                    "example": "guardian"
+                                                },
+                                                "slug": {
+                                                    "type": "string",
+                                                    "example": "australia-news-live-pm-says-trump-tariffs-not"
+                                                },
+                                                "title": {
+                                                    "type": "string",
+                                                    "example": "Australia news live: PM says Trump tariffs ‘not a friendly act’"
+                                                },
+                                                "url": {
+                                                    "type": "string",
+                                                    "example": "https://www.theguardian.com/australia-news/live/2025/mar/12/australia-news-live"
+                                                },
+                                                "category": {
+                                                    "type": "string",
+                                                    "example": "Australia news"
+                                                },
+                                                "contributor": {
+                                                    "type": "string",
+                                                    "example": "Stephanie Convery"
+                                                },
+                                                "published_at": {
+                                                    "type": "string",
+                                                    "example": "12th March, 2025 01:42"
+                                                },
+                                                "content": {
+                                                    "type": "string",
+                                                    "example": "<div id='block-67d0e22b8f0879'>Content here</div>"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Success"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Article not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Article not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/filters": {
             "get": {
                 "tags": [

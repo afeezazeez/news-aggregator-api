@@ -13,6 +13,12 @@ class ArticleFilter
         $this->filters = $filters;
     }
 
+    /**
+     * Applies filters to the query based on provided parameters.
+     *
+     * @param Builder $query The query builder instance.
+     * @return Builder The modified query builder with applied filters.
+     */
     public function apply(Builder $query): Builder
     {
         return  $query
@@ -24,11 +30,7 @@ class ArticleFilter
             })
             ->when(!empty($this->filters['authors']), function ($q) {
                 $authors = explode(',', $this->filters['authors']);
-                $q->where(function ($subQuery) use ($authors) {
-                    foreach ($authors as $author) {
-                        $subQuery->orWhere('contributor', 'LIKE', "%{$author}%");
-                    }
-                });
+                $q->whereIn('contributor', $authors);
             })
             ->when(!empty($this->filters['date']), function ($q) {
                 $q->whereDate('published_at', $this->filters['date']);

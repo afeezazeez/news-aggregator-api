@@ -47,7 +47,14 @@ class ArticleService
         }
     }
 
-    public function getArticles(array $filters = [],mixed $page_size): LengthAwarePaginator
+    /**
+     * Fetches articles with filtering and caching.
+     *
+     * @param mixed $page_size The number of articles per page.
+     * @param array $filters Optional filters for the query.
+     * @return LengthAwarePaginator Paginated list of articles.
+     */
+    public function getArticles(mixed $page_size,array $filters = []): LengthAwarePaginator
     {
         $page = request('page', 1);
         $cacheKey = 'articles_' . md5(json_encode($filters)) . "_page_{$page}";
@@ -62,7 +69,24 @@ class ArticleService
         });
     }
 
+    /**
+     * Retrieve a single article by its ID.
+     *
+     * @param int $id The ID of the article to retrieve.
+     *
+     * @return Article The found article instance.
+     *
+     */
+    public function getSingleArticle(string $slug): Article
+    {
+        return Article::whereSlug($slug)->firstorfail();
+    }
 
+    /**
+     * Fetches filter options for articles from the cache or database.
+     *
+     * @return array An array containing unique categories, sources, and authors.
+     */
     public function getFilterOptions(): array
     {
         return Cache::remember('article_filters', 3600, function () {
@@ -84,14 +108,25 @@ class ArticleService
     }
 
 
-
+    /**
+     * Retrieves the list of available news sources.
+     *
+     * @return array List of news source keys.
+     */
     public function getNewsSources(): array
     {
         return array_keys(app('news.sources'));
     }
 
+    /**
+     * Retrieves the mapping of news sources(From service provider) with their details.
+     *
+     * @return array Associative array of news sources.
+     */
     public function getNewsSourcesMapping(): array
     {
         return app('news.sources');
     }
+
+
 }

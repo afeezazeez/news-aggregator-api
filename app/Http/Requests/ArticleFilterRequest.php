@@ -11,6 +11,11 @@ class ArticleFilterRequest extends FormRequest
         return true;
     }
 
+    /**
+     * Defines validation rules for filtering article requests.
+     *
+     * @return array The validation rules for request parameters.
+     */
     public function rules(): array
     {
         return [

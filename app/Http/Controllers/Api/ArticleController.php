@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ArticleFilterRequest;
 use App\Http\Resources\ArticleListResource;
+use App\Http\Resources\ArticleShowResource;
 use App\Services\ArticleService;
 use Illuminate\Http\JsonResponse;
 
@@ -118,11 +119,72 @@ class ArticleController extends Controller
      *         )
      *     )
      * )
+     *  Fetch filtered articles based on request parameters.
+     *
+     * @param ArticleFilterRequest $request The validated filter request.
+     * @return JsonResponse The JSON response containing the filtered articles.
      */
     public function index(ArticleFilterRequest $request): JsonResponse
     {
-        $news = $this->articleService->getArticles($request->validated(), $this->page_size);
+        $news = $this->articleService->getArticles( $this->page_size,$request->validated());
         return successResponse(ArticleListResource::collection($news)->resource);
+    }
+
+
+    /**
+     * @OA\Get(
+     *     path="/api/articles/{slug}",
+     *     summary="Get a single article by slug",
+     *     description="Fetches a single article based on the provided slug.",
+     *     operationId="getSingleArticle",
+     *     tags={"Articles"},
+     *
+     *     @OA\Parameter(
+     *         name="slug",
+     *         in="path",
+     *         required=true,
+     *         description="The slug of the article",
+     *         @OA\Schema(type="string")
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful response",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="success", type="boolean", example=true),
+     *             @OA\Property(
+     *                 property="data",
+     *                 type="object",
+     *                 @OA\Property(property="id", type="integer", example=10),
+     *                 @OA\Property(property="source", type="string", example="guardian"),
+     *                 @OA\Property(property="slug", type="string", example="australia-news-live-pm-says-trump-tariffs-not"),
+     *                 @OA\Property(property="title", type="string", example="Australia news live: PM says Trump tariffs ‘not a friendly act’"),
+     *                 @OA\Property(property="url", type="string", example="https://www.theguardian.com/australia-news/live/2025/mar/12/australia-news-live"),
+     *                 @OA\Property(property="category", type="string", example="Australia news"),
+     *                 @OA\Property(property="contributor", type="string", example="Stephanie Convery"),
+     *                 @OA\Property(property="published_at", type="string", example="12th March, 2025 01:42"),
+     *                 @OA\Property(property="content", type="string", example="<div id='block-67d0e22b8f0879'>Content here</div>")
+     *             ),
+     *             @OA\Property(property="message", type="string", example="Success")
+     *         )
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=404,
+     *         description="Article not found",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="success", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="Article not found")
+     *         )
+     *     )
+     * )
+     */
+    public function show(string $slug): JsonResponse
+    {
+        $article = $this->articleService->getSingleArticle($slug);
+        return successResponse(ArticleShowResource::make($article));
     }
 
 }

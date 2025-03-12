@@ -26,7 +26,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withExceptions(function (Exceptions $exceptions) {
 
         $exceptions->renderable(function (NotFoundHttpException $e) {
-            return errorResponse('Route not found', Response::HTTP_NOT_FOUND);
+            return errorResponse("Resource not found", Response::HTTP_NOT_FOUND);
         });
 
         $exceptions->renderable(function (ModelNotFoundException $e) {

@@ -20,6 +20,12 @@ class NewsApiService implements NewsSourceInterface
     }
 
     /**
+     * Fetches articles from the external news API.
+     *
+     * This method retrieves articles in a paginated manner, making multiple requests
+     * until all pages are fetched. It retries failed requests up to 3 times before logging errors.
+     *
+     * @return array List of normalized articles.
      */
     public function fetchArticles(): array
     {
@@ -68,7 +74,15 @@ class NewsApiService implements NewsSourceInterface
     }
 
 
-
+    /**
+     * Normalizes articles retrieved from the external news API.
+     *
+     * This method processes raw API responses, mapping relevant fields to a structured format
+     * and assigning default values where necessary.
+     *
+     * @param array $articles List of articles fetched from the API.
+     * @return array Normalized articles with standardized attributes.
+     */
     public function normalizeArticles(array $articles): array
     {
        $newsSourcesMapping = (new ArticleService())->getNewsSourcesMapping();

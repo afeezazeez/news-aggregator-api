@@ -28,9 +28,7 @@ class FetchNews extends Command
      */
     protected $description = 'Command to regularly fetch news from app sources';
 
-    /**
-     * Execute the console command.
-     */
+
     /**
      * Execute the console command.
      */

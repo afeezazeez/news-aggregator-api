@@ -43,6 +43,9 @@ class ArticleFiltersController extends Controller
      *         )
      *     )
      * )
+     *  Fetches available filter options for articles.
+     *
+     * @return JsonResponse The JSON response containing filter categories.
      */
     public function index(): JsonResponse
     {
