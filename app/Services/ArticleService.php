@@ -91,7 +91,6 @@ class ArticleService
             $filters = Article::query()
                 ->selectRaw(
                     'GROUP_CONCAT(DISTINCT category) as categories,
-                 GROUP_CONCAT(DISTINCT source) as sources,
                  GROUP_CONCAT(DISTINCT contributor) as authors'
                 )
                 ->first()
@@ -99,7 +98,7 @@ class ArticleService
 
             return [
                 'categories' => $filters['categories'] ? explode(',', $filters['categories']) : [],
-                'sources'    => $filters['sources'] ? explode(',', $filters['sources']) : [],
+                'sources'    =>  $this->getNewsSources(),
                 'authors'    => $filters['authors'] ? explode(',', $filters['authors']) : [],
             ];
         });
