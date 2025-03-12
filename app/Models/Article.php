@@ -4,12 +4,13 @@ namespace App\Models;
 
 use App\Filters\ArticleFilter;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Article extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes,HasFactory;
     protected $fillable = ['unique_id','title','content','source','category','contributor','published_at','url','slug'];
 
 
