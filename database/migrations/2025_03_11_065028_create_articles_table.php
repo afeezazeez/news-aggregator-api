@@ -20,7 +20,7 @@ return new class extends Migration
             $table->longText('content')->nullable();
             $table->string('source');
             $table->string('category')->nullable();
-            $table->string('contributor')->nullable();
+            $table->text('contributor')->nullable();
             $table->timestamp('published_at');
             $table->timestamps();
             $table->softDeletes();

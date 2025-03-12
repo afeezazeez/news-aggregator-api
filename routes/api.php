@@ -1,8 +1,9 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\ArticleFiltersController;
+
 use Illuminate\Support\Facades\Route;
 
-Route::get('/test', function (Request $request) {
-    return successResponse("API WORKS");
-});
+Route::get('/articles',[ArticleController::class,'index']);
+Route::get('/filters',[ArticleFiltersController::class,'index']);

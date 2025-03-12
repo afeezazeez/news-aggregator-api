@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\MessageBag;
 use Illuminate\Support\Str;
 
@@ -49,3 +50,29 @@ if (! function_exists('slugify')) {
     }
 
 }
+
+
+if (!function_exists('store_cache_key')) {
+    function store_cache_key(string $cacheKey): void
+    {
+        $cacheKeys = Cache::get('article_cache_keys', []);
+        if (!in_array($cacheKey, $cacheKeys)) {
+            $cacheKeys[] = $cacheKey;
+            Cache::put('article_cache_keys', $cacheKeys, 600);
+        }
+    }
+}
+
+if (!function_exists('clear_cached_articles')) {
+    function clear_cached_articles(): void
+    {
+        $cacheKeys = Cache::get('article_cache_keys', []);
+
+        foreach ($cacheKeys as $key) {
+            Cache::forget($key);
+        }
+
+        Cache::forget('article_cache_keys');
+    }
+}
+

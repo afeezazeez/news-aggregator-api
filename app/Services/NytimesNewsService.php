@@ -87,6 +87,6 @@ class NytimesNewsService implements NewsSourceInterface
         if ($name && stripos($name, 'By ') === 0) {
             return trim(substr($name, 3));
         }
-        return $name;
+        return "";
     }
 }

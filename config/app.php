@@ -18,6 +18,7 @@ return [
     'news_api_service_max' => env('NEWS_API_SERVICE_MAX'),
     'nyt_api_service_max' => env('NYT_API_SERVICE_MAX'),
     'news_api_service_category' => env('NEWS_API_SERVICE_CATEGORY'),
+    'default_pagination_size' => env('DEFAULT_PAGINATION_SIZE'),
 
     /*
     |--------------------------------------------------------------------------
