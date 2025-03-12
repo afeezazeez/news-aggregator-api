@@ -1,66 +1,82 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Challenge
+The challenge is to build the backend functionality for a news aggregator website that pulls articles from various sources and serves them to the frontend application.
+# Solution
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## News Aggregator API
 
-## About Laravel
+## Description
+The News Aggregator API is a Laravel-based backend system that aggregates news articles from multiple external sources—such as The Guardian, NewsAPI, and The New York Times—and exposes endpoints to retrieve and filter this content. It supports paginated article listings and detailed views by slug, and uses dynamic filtering (by category, source, author, and date) along with caching to improve performance and scalability.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Running the App
+To run the App, you must have:
+- **PHP** (https://www.php.net/downloads)
+- **MySQL** (https://www.mysql.com/downloads/)
+- **Composer** (https://getcomposer.org/download/)
+- **PHPUnit** (https://phpunit.de/getting-started.html)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Clone the repository to your local machine using the command
+```console
+$ git clone https://github.com/afeezazeez/news-aggregator-api.git
+```
+## Configure app
+Create an `.env` and copy `.env.example` content into it using the command.
 
-## Learning Laravel
+```console
+$ cp .env.example .env
+```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### Environment
+Configure environment variables in `.env` for dev environment based on your MYSQL database configuration and other configurations.
+Please note that you have to set valid NEWSAPI_KEY, GUARDIAN_KEY, NYTIMES_KEY for news to be imported successfully.
+Also set a default category to be used to filter NewsApi . You can leave it as default 'technology' 
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+```  
+DB_CONNECTION=<YOUR_DB_CONNECTION>
+DB_HOST=<YOUR_MYSQL_HOST>
+DB_PORT=<YOUR_MYSQL_PORT>
+DB_DATABASE=<YOUR_DB_NAME>
+DB_USERNAME=<YOUR_DB_USERNAME>
+DB_PASSWORD=<YOUR_DB_PASSWORD>
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+NEWSAPI_KEY=
+NEWSAPI_API_URL=https://newsapi.org/v2/everything
 
-## Laravel Sponsors
+GUARDIAN_KEY=
+GUARDIAN_API_URL=https://content.guardianapis.com/search
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+NYTIMES_KEY=
+NYTIMES_API_URL=https://api.nytimes.com/svc/search/v2/articlesearch.json
 
-### Premium Partners
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+```
+### LARAVEL INSTALLATION
+Install the dependencies and start the server
 
-## Contributing
+```console
+$ composer install
+$ php artisan key:generate
+$ php artisan migrate
+$ php artisan l5-swagger:generate
+$ php artisan serve
+```
+You should be able to visit your app at your laravel app base url e.g http://localhost:8000 or http://news-aggregator-api.test// (Provided you use Laravel Valet).
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
 
-## Code of Conduct
+### Run the below command to fetch news
+```console
+$ php artisan app:fetch-news
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Api swagger documentation - http://news-aggregator-api.test/api/documentation or http://localhost:8000/api/documentation
 
-## Security Vulnerabilities
+### Running tests
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+To run the tests, run the below command
+```console
+$ composer test
+```
 
-## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Additional Information
+For details on architectural design choices, programming decisions and assumptions, as well as suggestions for future improvements, please refer to [this document](https://docs.google.com/document/d/16R69Pl1BHEnCXEP1ZE7yAAgkaiNb4s7c56uJcYeqkXA).
