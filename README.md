@@ -1,7 +1,3 @@
-# Challenge
-The challenge is to build the backend functionality for a news aggregator website that pulls articles from various sources and serves them to the frontend application.
-# Solution
-
 ## News Aggregator API
 
 ## Description
@@ -82,6 +78,3 @@ To run the tests, run the below command
 $ composer test
 ```
 
-
-## Additional Information
-For details on architectural design choices, programming decisions and assumptions, as well as suggestions for future improvements, please refer to [this document](https://docs.google.com/document/d/16R69Pl1BHEnCXEP1ZE7yAAgkaiNb4s7c56uJcYeqkXA).
